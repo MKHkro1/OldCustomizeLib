@@ -627,18 +627,28 @@ namespace CustomizeLib.BepInEx.Extra.PlantExtra.IPlantEvent
             }
         }
 
+        /// <summary>
+        /// TriggerOnceAttribute 的判定结果缓存。
+        /// 原实现每次调用都执行 method.GetCustomAttributes(...) + OfType + ToArray：
+        /// GetCustomAttributes 每次都会重新实例化特性对象（运行时不做缓存），后面还跟着两次分配。
+        /// 而本方法在每帧路径上——单株单帧 OnUpdate 的 Pre/Post 各调 2 次，FixedUpdate 再来一遍，
+        /// 场上 50 株 60FPS 就是每秒上万次反射。特性是静态元数据，判定结果只与 MethodInfo 有关，缓存后完全等价。
+        /// 键是 MethodInfo，条目数上限 = 事件方法种类数（有界），不会无限增长。
+        /// </summary>
+        private static readonly Dictionary<MethodInfo, TriggerType?> TriggerCache = new();
+
         private static bool IsMethodTrigger(Delegate box, TriggerType trigger)
         {
             var method = box.Method;
             if (method == null) return false;
-            var attr = method.GetCustomAttributes(typeof(TriggerOnceAttribute), false).OfType<TriggerOnceAttribute>().ToArray();
-            if (attr == null) return true;
-            if (attr != null)
+            if (!TriggerCache.TryGetValue(method, out var once))
             {
-                if (attr.Length <= 0) return true; 
-                return attr[0].Trigger == trigger;
+                // 没有 TriggerOnceAttribute ⇒ once 为 null ⇒ 两个 trigger 都执行（与原逻辑一致）
+                var attr = method.GetCustomAttributes(typeof(TriggerOnceAttribute), false).OfType<TriggerOnceAttribute>().FirstOrDefault();
+                once = attr?.Trigger;
+                TriggerCache[method] = once;
             }
-            return true;
+            return once == null || once == trigger;
         }
 
         public static Component?[] GetEventComponents(Component?[] comps) =>
@@ -655,8 +665,21 @@ namespace CustomizeLib.BepInEx.Extra.PlantExtra.IPlantEvent
         public static void MakeRefresh(Component comp) => 
             comp.SetData(Strings.CachedCompsName, GetEventComponents(comp.GetComponents<Component>()));
 
-        public static Component?[] GetCachedComps(Component comp) =>
-            comp.GetOrInitData<Component?[]>(Strings.CachedCompsName, []);
+        public static Component?[] GetCachedComps(Component comp)
+        {
+            // 这是整个库里最热的一个访问器（每株植物每帧至少 2 次，OnUpdate 的 Pre/Post 各一次）。
+            // 原写法 GetOrInitData(...) 内部会读一次 .val 做判空，返回时又经隐式转换再读一次 .val，
+            // 而每次 .val 都是一次原生 GetOrAddComponent<DataComponent>()。
+            // 改成只用非初始化版 GetData 并手动判空：稳态下每株每帧从 2 次原生调用降到 1 次。
+            var data = comp.GetData<Component?[]>(Strings.CachedCompsName);
+            var comps = data.val;
+            if (comps == null)
+            {
+                comp.SetData(Strings.CachedCompsName, Array.Empty<Component?>());
+                return Array.Empty<Component?>();
+            }
+            return comps;
+        }
 
         public static int GetCachedCompCount(Component comp) =>
             GetCachedComps(comp).Length;

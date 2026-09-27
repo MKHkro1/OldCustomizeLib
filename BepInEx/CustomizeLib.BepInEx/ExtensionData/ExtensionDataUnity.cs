@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,7 +15,7 @@ namespace CustomizeLib.BepInEx.ExtensionData.Unity
         {
             var data = obj.GetData<T>(name);
             if (data.val == null) obj.SetData(name, defaultValue);
-            return obj.GetData<T>(name);
+            return data;   // 原实现是 return obj.GetData<T>(name); —— 同一个 (obj, name) 再取一次，纯浪费
         }
 
         public static ExtDataRef<T> GetData<T>(this UnityEngine.Object obj, string name)
@@ -29,12 +29,14 @@ namespace CustomizeLib.BepInEx.ExtensionData.Unity
         {
             var data = obj.GetData<T>(name);
             if (data.val == null) obj.SetData(name, defaultValue);
-            return obj.GetData<T>(name);
+            return data;
         }
 
         public static ExtDataRef<T> GetData<T>(this GameObject obj, string name)
         {
-            var dataComp = obj.GetOrAddComponent<DataComponent>();
+            // 原来这里有一句 var dataComp = obj.GetOrAddComponent<DataComponent>(); 但 dataComp 从未被使用，
+            // 只是一次白付的原生 GetComponent（命中时）。ExtDataRef 的 val getter 自己会取组件，
+            // 真正写入时 SetData 也会取，所以这里不需要预取。
             return new ExtDataRef<T>(obj, name);
         }
 
@@ -42,12 +44,12 @@ namespace CustomizeLib.BepInEx.ExtensionData.Unity
         {
             var data = obj.GetData<T>(name);
             if (data.val == null) obj.SetData(name, defaultValue);
-            return obj.GetData<T>(name);
+            return data;
         }
 
         public static ExtDataRef<T> GetData<T>(this Component obj, string name)
         {
-            var dataComp = obj.gameObject.GetOrAddComponent<DataComponent>();
+            // 同上：原来那句 dataComp 是死变量。
             return new ExtDataRef<T>(obj, name);
         }
 
@@ -76,8 +78,12 @@ namespace CustomizeLib.BepInEx.ExtensionData.Unity
 
         public object? GetData(string name)
         {
-            if (!datas.ContainsKey(name)) datas.Add(name, null);
-            return datas[name];
+            // 原实现是 if (!datas.ContainsKey(name)) datas.Add(name, null); return datas[name];
+            // 即"读操作会顺手往字典里插一个 null"。这有两个问题：
+            //   1) 一次读取变成 ContainsKey + Add 两次哈希查找；
+            //   2) 读操作修改字典，在别的线程遍历时可能抛 InvalidOperationException。
+            // 改成 TryGetValue 后可观察行为不变（缺键依旧返回 null），且不再有副作用。
+            return datas.TryGetValue(name, out var value) ? value : null;
         }
 
         public void SetData(string name, object value)
@@ -92,8 +98,11 @@ namespace CustomizeLib.BepInEx.ExtensionData.Unity
         {
             get
             {
-                return (T)((parent.GetOrAddComponent<DataComponent>().GetData(name) == null ?
-                    default(T) : parent.GetOrAddComponent<DataComponent>().GetData(name)));
+                // 原实现写成 parent.GetOrAddComponent<DataComponent>().GetData(name) == null ? ... : parent.GetOrAddComponent<...>().GetData(name)
+                // 两个分支各做一次 GetOrAddComponent，而本 getter 在每帧路径上（ExtDataRef 的隐式转换）会被访问多次，
+                // 每次都是两次原生 GetComponent。这里只取一次组件、一次数据。
+                var data = parent.GetOrAddComponent<DataComponent>().GetData(name);
+                return data == null ? default : (T)data;
             }
             set => parent.GetOrAddComponent<DataComponent>().SetData(name, value);
         }

@@ -185,11 +185,30 @@ namespace CustomizeLib.BepInEx.Extra.PlantExtra.IPlantEvent
 
         public static void OnPlantUpdate(IntPtr @this, IntPtr method)
         {
+            // new 出来的包装对象必然非 null，原来那个 bool notNull = plant != null 是恒真的死判断。
+            // （顺带核实：Plant -> Entity -> MonoBehaviour 整条继承链都没有 op_Equality/op_Inequality，
+            //   所以 != null 只是普通引用比较，并不昂贵；真正省下的是这个无意义的中转变量。）
             var plant = new Plant(@this);
-            bool notNull = plant != null;
-            if (notNull) PlantEvent.OnUpdate(plant!, TriggerType.Pre);
+            try
+            {
+                PlantEvent.OnUpdate(plant, TriggerType.Pre);
+            }
+            catch (Exception ex)
+            {
+                // 必须隔离：原实现没有 try/catch，用户写在 IPlantEvent.OnUpdate 里的异常一旦抛出，
+                // 下面的 Original.Invoke 就不会执行 —— 该植物这一帧的原生 Update 被整段跳过，
+                // 且异常会穿过 native 帧返回 IL2CPP。这里保证原生逻辑一定跑。
+                CustomCore.CLogger.LogError($"[IPlantEvent] OnUpdate(Pre) 抛出异常：{ex}");
+            }
             Original.Invoke(@this, method);
-            if (notNull) PlantEvent.OnUpdate(plant!, TriggerType.Post);
+            try
+            {
+                PlantEvent.OnUpdate(plant, TriggerType.Post);
+            }
+            catch (Exception ex)
+            {
+                CustomCore.CLogger.LogError($"[IPlantEvent] OnUpdate(Post) 抛出异常：{ex}");
+            }
         }
     }
 
@@ -209,10 +228,23 @@ namespace CustomizeLib.BepInEx.Extra.PlantExtra.IPlantEvent
         public static void OnPlantFixedUpdate(IntPtr @this, IntPtr method)
         {
             var plant = new Plant(@this);
-            bool notNull = plant != null;
-            if (notNull) PlantEvent.OnFixedUpdate(plant!, plant!, TriggerType.Pre);
+            try
+            {
+                PlantEvent.OnFixedUpdate(plant, plant, TriggerType.Pre);
+            }
+            catch (Exception ex)
+            {
+                CustomCore.CLogger.LogError($"[IPlantEvent] OnFixedUpdate(Pre) 抛出异常：{ex}");
+            }
             Original.Invoke(@this, method);
-            if (notNull) PlantEvent.OnFixedUpdate(plant!, plant!, TriggerType.Post);
+            try
+            {
+                PlantEvent.OnFixedUpdate(plant, plant, TriggerType.Post);
+            }
+            catch (Exception ex)
+            {
+                CustomCore.CLogger.LogError($"[IPlantEvent] OnFixedUpdate(Post) 抛出异常：{ex}");
+            }
         }
     }
     #endregion

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,9 +24,11 @@ namespace CustomizeLib.BepInEx.ExtensionData.Basic
                 return default;
             try
             {
-                if (component.gameObject.GetData(name) == null)
-                    return default;
-                return (T)component.gameObject.GetData(name);
+                // 原实现：if (gameObject.GetData(name) == null) return default; return (T)gameObject.GetData(name);
+                // 同一个值取两次，而 GetData 内部每次都要 TryGetComponent<ExtensionDataComponent>（原生调用）。
+                // 改成取一次。（本方法经 GetCachedComps 进入每帧路径。）
+                var data = component.gameObject.GetData(name);
+                return data == null ? default : (T)data;
             }
             catch (Exception e)
             {
@@ -63,9 +65,8 @@ namespace CustomizeLib.BepInEx.ExtensionData.Basic
                 return default;
             try
             {
-                if (gameObject.GetData(name) == null)
-                    return default;
-                return (T)gameObject.GetData(name);
+                var data = gameObject.GetData(name);
+                return data == null ? default : (T)data;
             }
             catch (Exception e)
             {

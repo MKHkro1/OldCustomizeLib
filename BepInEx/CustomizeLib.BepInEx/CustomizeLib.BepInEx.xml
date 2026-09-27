@@ -1173,6 +1173,16 @@
             <param name="data">序列化数据</param>
             <param name="trigger">调用时机</param>
         </member>
+        <member name="F:CustomizeLib.BepInEx.Extra.PlantExtra.IPlantEvent.PlantEvent.TriggerCache">
+            <summary>
+            TriggerOnceAttribute 的判定结果缓存。
+            原实现每次调用都执行 method.GetCustomAttributes(...) + OfType + ToArray：
+            GetCustomAttributes 每次都会重新实例化特性对象（运行时不做缓存），后面还跟着两次分配。
+            而本方法在每帧路径上——单株单帧 OnUpdate 的 Pre/Post 各调 2 次，FixedUpdate 再来一遍，
+            场上 50 株 60FPS 就是每秒上万次反射。特性是静态元数据，判定结果只与 MethodInfo 有关，缓存后完全等价。
+            键是 MethodInfo，条目数上限 = 事件方法种类数（有界），不会无限增长。
+            </summary>
+        </member>
         <member name="M:CustomizeLib.BepInEx.Extra.PlantExtra.IPlantEvent.PlantEvent.AddToList(CustomizeLib.BepInEx.Extra.PlantExtra.IPlantEvent.IAsyncPlantEvent)">
             <summary>
             更新缓存
