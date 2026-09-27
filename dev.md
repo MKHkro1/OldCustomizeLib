@@ -1,0 +1,2 @@
+# 开发者文档   
+从Release中下载最新的适用于正式版的CustomizeLib的dll，在您的项目中引用此dll，并导入命名空间CustomizeLib.BepInEx来在您的项目中使用CustomizeLib，发布mod时请将此dll与您的mod一起发布，避免出现无法找到dll的报错

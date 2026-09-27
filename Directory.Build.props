@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <PropertyGroup>
+    <!-- 本机路径（2026-09-27 适配）：原为作者机的 F: 盘，本机不存在，全部改为仓库/游戏实例内的相对或本机绝对路径 -->
+    <RepoRoot>$(MSBuildThisFileDirectory)</RepoRoot>
+    <BepResPath>$(RepoRoot)res\BepInEx</BepResPath>
+    <MelonResPath>$(RepoRoot)res\MelonLoader</MelonResPath>
+    <PluginsPath>$(BepResPath)</PluginsPath>
+    <InnerPath>$(BepResPath)</InnerPath>
+
+    <!-- 编译依赖：4.0 游戏实例 BepInEx 运行时程序集（core=BepInEx/Il2CppInterop/Harmony，interop=游戏 interop） -->
+    <GameBepInExPath>D:\GAME\PVZ\融合\4.0\B版\植物大战僵尸融合版4.0雪夜上半\BepInEx\</GameBepInExPath>
+    <BepCoreLibsPath>$(GameBepInExPath)core\</BepCoreLibsPath>
+    <GameInteropLibsPath>$(GameBepInExPath)interop\</GameInteropLibsPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- 绉婚櫎鎵€鏈塂LL寮曠敤锛堜繚鐣橮rojectReference锛?-->
+    <Reference Remove="@(Reference)" />
+    
+    <!-- 娣诲姞鍏ㄥ眬BepInEx寮曠敤 -->
+    <Reference Include="$(BepCoreLibsPath)*.dll"
+               Exclude="$(BepCoreLibsPath)dobby.dll">
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="$(GameInteropLibsPath)*.dll">
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+  <MakeDir Directories="$(BepResPath)" />
+  <Exec Command="COPY &quot;$(TargetPath)&quot; &quot;$(BepResPath)\&quot;" />
+</Target>
+	<PropertyGroup>
+		<NoWarn>$(NoWarn);MSB3277</NoWarn>
+	</PropertyGroup>
+</Project>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

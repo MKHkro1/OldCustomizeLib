@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <PropertyGroup>
+    <PluginsPath>F:\PVZRH_Bep\BepInEx\plugins</PluginsPath>
+	<InnerPath>F:\PVZRH_Inner\BepInEx\plugins</InnerPath>
+    <ModsPath>F:\PVZRH_Melon\Mods</ModsPath>
+	<BepResPath>F:\vsrepos\Customizelib\res\BepInEx</BepResPath>
+	<MelonResPath>F:\vsrepos\Customizelib\res\MelonLoader</MelonResPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- 绉婚櫎鎵€鏈塂LL寮曠敤锛堜繚鐣橮rojectReference锛?-->
+    <Reference Remove="@(Reference)" />
+    
+    <!-- 娣诲姞鍏ㄥ眬BepInEx寮曠敤 -->
+    <Reference Include="F:\vsrepos\CustomizeLib\lib\BepInEx\libs\*.dll" 
+               Exclude="F:\vsrepos\CustomizeLib\lib\BepInEx\libs\dobby.dll">
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+  <Exec Command="COPY &quot;$(TargetPath)&quot; &quot;$(BepResPath)&quot;" />
+  <Exec Command="COPY &quot;$(TargetPath)&quot; &quot;$(InnerPath)&quot;" />
+</Target>
+	<PropertyGroup>
+		<NoWarn>$(NoWarn);MSB3277</NoWarn>
+	</PropertyGroup>
+</Project>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Plants\UltimateGloom.cs 整个文件都是对游戏类 IceDoomGloom 的补丁。
+         IceDoomGloom 在 3.5 / 3.7 存在，4.0 已被删除。已确认是"删除"而非"改名"：
+         3.7 的 Gloom 系类型里 IceDoomGloom 与 IceGloom 是两个不同的类并存，4.0 只剩 IceGloom。
+         因此该文件在 4.0 下无法编译（CS0246/CS0103），此处只把它排除出编译，源码原样保留，
+         等游戏把 IceDoomGloom 加回来（或作者把补丁改挂到别的类上）再放开即可。 -->
+    <Compile Remove="Plants\UltimateGloom.cs" />
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+  <Exec Command="COPY &quot;$(TargetPath)&quot; &quot;$(BepResPath)&quot;" />
+  <Exec Command="COPY &quot;$(TargetPath)&quot; &quot;$(PluginsPath)&quot;" />
+</Target>
+</Project>
