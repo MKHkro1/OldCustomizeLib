@@ -1,95 +1,71 @@
-<?xml version="1.0" encoding="utf-8"?>
 <Project>
-  <PropertyGroup>
-    <!-- 本机路径（2026-09-27 适配）：原为作者机的 F: 盘，本机不存在，全部改为仓库/游戏实例内的相对或本机绝对路径 -->
-    <RepoRoot>$(MSBuildThisFileDirectory)</RepoRoot>
-    <BepResPath>$(RepoRoot)res\BepInEx</BepResPath>
-    <MelonResPath>$(RepoRoot)res\MelonLoader</MelonResPath>
-    <PluginsPath>$(BepResPath)</PluginsPath>
-    <InnerPath>$(BepResPath)</InnerPath>
+  <!--
+    前置库（CustomizeLib.BepInEx）专用 Directory.Build.props
 
-    <!-- 编译依赖：4.0 游戏实例 BepInEx 运行时程序集（core=BepInEx/Il2CppInterop/Harmony，interop=游戏 interop） -->
+    为什么需要本文件：
+      MSBuild 的「就近 Directory.Build.props」规则会**只导入最近的那一个**，不叠加。
+      本工程在 2026-09-27 从 `.CustomizeLib二创插件前置库及使用示例（4.0版本）\` 移到 `插件项目Code\前置库\` 之后，
+      原先那份提供引用集（F:\vsrepos\CustomizeLib\lib\BepInEx\libs\*.dll，作者机路径，本机不存在）不再生效，
+      继承到的是 `插件项目Code\Directory.Build.props`，它只提供 5 个引用
+      （Core / Assembly-CSharp / Unity.TextMeshPro / UnityEngine.UI / UnityEngine.CoreModule），
+      不足以编译本库 → 1051 个 CS0012。
+      故在此重建完整引用集。
+
+    ⚠ 刻意**不**创建 `前置库\Directory.Build.targets`：
+      那会把 `插件项目Code\Directory.Build.targets` 顶掉，
+      而统一构建产物落盘正是靠它里面的 CopyMainDllByMap（按 dll输出对应.txt 映射复制）。
+      只建 props、保留上级的 targets，是刻意的设计。
+
+    引用集来源 = 4.0 游戏实例的 BepInEx 运行时程序集（编译期与运行期同一套，最不容易出幺蛾子）：
+      core    : BepInEx / Il2CppInterop / 0Harmony(HarmonyX) / MonoMod / SemanticVersioning …
+      interop : Assembly-CSharp（游戏本体）/ Il2Cppmscorlib / Il2CppSystem* / UnityEngine.*Module / UniTask …
+      dobby.dll 是原生库、没有托管元数据，必须排除（否则 MSB3202/引用解析失败）。
+  -->
+  <PropertyGroup>
+    <!-- 备用：本文件当前**没有**任何地方引用 PVZLibsDir（实际引用走下面两个 *_LibsPath）。
+         保留它是因为同仓库其它工程（插件项目Code\Directory.Build.props）用同名属性，
+         且它是"换机器/改引用来源"时最现成的回退目标。 -->
+    <PVZLibsDir>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\libs插件依赖\'))</PVZLibsDir>
     <GameBepInExPath>D:\GAME\PVZ\融合\4.0\B版\植物大战僵尸融合版4.0雪夜上半\BepInEx\</GameBepInExPath>
     <BepCoreLibsPath>$(GameBepInExPath)core\</BepCoreLibsPath>
     <GameInteropLibsPath>$(GameBepInExPath)interop\</GameInteropLibsPath>
   </PropertyGroup>
+
+  <!-- 引用集存在性守卫（2026-09-28 补）
+       为什么必须加：上面两个 <Reference Include="...\*.dll" /> 是 **glob**，
+       路径写错 / 换机器 / 游戏升版本时，glob 匹配到 0 个文件也**不报错**，
+       引用被静默丢掉 → 最终表现为满屏 CS0012（本文件顶部记的那 1051 个），
+       而真正的病因（路径不存在）一个字都不会出现在日志里，排查成本极高。
+       所以在任何编译发生之前先把路径问题炸出来，并给出可操作提示。 -->
+  <Target Name="ValidateGameReferencePath" BeforeTargets="ResolveAssemblyReferences">
+    <Error Condition="!Exists('$(GameInteropLibsPath)')"
+           Text="前置库引用集缺失：找不到 interop 目录 '$(GameInteropLibsPath)'。当前 GameBepInExPath='$(GameBepInExPath)'。换机器 / 游戏升版本 / 目录改名后，必须同步修改 前置库\Directory.Build.props 里的 GameBepInExPath。（没有这个守卫的话，glob 匹配不到文件会静默丢引用，最后只表现为上千个 CS0012。）" />
+    <Error Condition="!Exists('$(BepCoreLibsPath)')"
+           Text="前置库引用集缺失：找不到 BepInEx core 目录 '$(BepCoreLibsPath)'。当前 GameBepInExPath='$(GameBepInExPath)'。同上，需同步修改 前置库\Directory.Build.props。" />
+  </Target>
+
+  <ItemDefinitionGroup>
+    <!-- 引用一律不复制到输出目录：这些程序集由游戏/BepInEx 提供 -->
+    <Reference>
+      <Private>false</Private>
+    </Reference>
+  </ItemDefinitionGroup>
+
   <ItemGroup>
-    <!-- 绉婚櫎鎵€鏈塂LL寮曠敤锛堜繚鐣橮rojectReference锛?-->
-    <Reference Remove="@(Reference)" />
-    
-    <!-- 娣诲姞鍏ㄥ眬BepInEx寮曠敤 -->
-    <Reference Include="$(BepCoreLibsPath)*.dll"
-               Exclude="$(BepCoreLibsPath)dobby.dll">
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="$(GameInteropLibsPath)*.dll">
-      <Private>false</Private>
-    </Reference>
+    <Compile Remove="相关参考**\**" />
+    <Compile Remove="相关参考代码\**" />
+    <Compile Remove="相关参考项目\**" />
+    <Compile Remove="相关反汇编**\**" />
+    <Compile Remove="相关反汇编代码\**" />
+    <Compile Remove="Microsoft\**" />
+    <Compile Remove="System\**" />
   </ItemGroup>
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-  <MakeDir Directories="$(BepResPath)" />
-  <Exec Command="COPY &quot;$(TargetPath)&quot; &quot;$(BepResPath)\&quot;" />
-</Target>
-	<PropertyGroup>
-		<NoWarn>$(NoWarn);MSB3277</NoWarn>
-	</PropertyGroup>
+
+  <ItemGroup>
+    <!-- core：BepInEx / Il2CppInterop / Harmony / MonoMod 等（排除原生库 dobby.dll） -->
+    <Reference Include="$(BepCoreLibsPath)*.dll"
+               Exclude="$(BepCoreLibsPath)dobby.dll" />
+    <!-- interop：游戏本体 + Unity/Il2Cpp 程序集 -->
+    <Reference Include="$(GameInteropLibsPath)*.dll" />
+  </ItemGroup>
 </Project>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
