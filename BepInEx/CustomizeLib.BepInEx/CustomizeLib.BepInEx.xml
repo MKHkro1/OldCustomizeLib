@@ -621,6 +621,26 @@
             <param name="func">能否击中</param>
             <param name="igonreTeam">忽略同阵营</param>
         </member>
+        <member name="M:CustomizeLib.BepInEx.CustomCore.DiagnoseBaseBuffConstraint">
+             <summary>
+             一次性自检：把「4.0 游戏 interop 的 BaseBuff&lt;T&gt; 泛型约束缺陷」在启动时讲清楚，
+             避免每次都被当成某个 mod 的 bug 反复排查。
+            
+             事实（Cecil 实测 4.0 interop）：
+               BaseBuff&lt;T&gt; 的 T 约束 = Il2CppSystem.Enum（该类型在 Il2Cppmscorlib.dll 里）
+               AdvBuff / TravelDebuff / InvestBuff 三个词条枚举实际派生自 System.Enum
+             枚举是密封值类型，基类只能是 System.Enum，因此**永远无法满足**该约束，
+             于是 BaseBuff&lt;AdvBuff&gt; 等实例化在运行时必然抛 TypeLoadException。
+            
+             触发者不是本库：全库没有任何一处引用 BaseBuff&lt;&gt;（只用到那三个枚举本身），
+             日志里首次报错出现在 BepInEx 加载第 1 个插件（UnityExplorer）时，早于本库加载。
+             任何在启动期枚举 Assembly-CSharp 类型的插件都会刷出成百上千条：
+               System.TypeLoadException: GenericArguments[0], 'AdvBuff', on 'BaseBuff`1[T]' violates the constraint of type parameter 'T'
+            
+             这是游戏 interop 生成侧的缺陷，插件侧无法修复（要改得改 Assembly-CSharp.dll）。
+             本方法只负责"说清楚"，不做任何绕过，也绝不影响启动。
+             </summary>
+        </member>
         <member name="P:CustomizeLib.BepInEx.CustomCore.CustomDebuffs">
             <summary>
             自定义僵尸词条列表

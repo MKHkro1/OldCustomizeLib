@@ -1,4 +1,4 @@
-﻿// #define DEBUG_FEATURE__ENABLE_MULTI_LEVEL_BUFF // 启用多级词条
+// #define DEBUG_FEATURE__ENABLE_MULTI_LEVEL_BUFF // 启用多级词条
 
 using AlmanacData;
 using BepInEx;
@@ -1519,8 +1519,58 @@ namespace CustomizeLib.BepInEx
         public static void RegisterCustomBulletHitFilter(BulletHitFilter filter, Func<Zombie, bool> func, bool igonreTeam = true) =>
             CustomBulletHitFilter.AddErrorIfDup(filter, (igonreTeam, func), $"Duplicate BulletHitFilter ID: {filter}");
 
+        private static bool _baseBuffConstraintChecked;
+
+        /// <summary>
+        /// 一次性自检：把「4.0 游戏 interop 的 BaseBuff&lt;T&gt; 泛型约束缺陷」在启动时讲清楚，
+        /// 避免每次都被当成某个 mod 的 bug 反复排查。
+        ///
+        /// 事实（Cecil 实测 4.0 interop）：
+        ///   BaseBuff&lt;T&gt; 的 T 约束 = Il2CppSystem.Enum（该类型在 Il2Cppmscorlib.dll 里）
+        ///   AdvBuff / TravelDebuff / InvestBuff 三个词条枚举实际派生自 System.Enum
+        /// 枚举是密封值类型，基类只能是 System.Enum，因此**永远无法满足**该约束，
+        /// 于是 BaseBuff&lt;AdvBuff&gt; 等实例化在运行时必然抛 TypeLoadException。
+        ///
+        /// 触发者不是本库：全库没有任何一处引用 BaseBuff&lt;&gt;（只用到那三个枚举本身），
+        /// 日志里首次报错出现在 BepInEx 加载第 1 个插件（UnityExplorer）时，早于本库加载。
+        /// 任何在启动期枚举 Assembly-CSharp 类型的插件都会刷出成百上千条：
+        ///   System.TypeLoadException: GenericArguments[0], 'AdvBuff', on 'BaseBuff`1[T]' violates the constraint of type parameter 'T'
+        ///
+        /// 这是游戏 interop 生成侧的缺陷，插件侧无法修复（要改得改 Assembly-CSharp.dll）。
+        /// 本方法只负责"说清楚"，不做任何绕过，也绝不影响启动。
+        /// </summary>
+        private static void DiagnoseBaseBuffConstraint()
+        {
+            if (_baseBuffConstraintChecked) return;
+            _baseBuffConstraintChecked = true;
+            try
+            {
+                // 用反射取，避免让本库自身产生对 BaseBuff&lt;&gt; 的编译期引用
+                var open = Type.GetType("BaseBuff`1, Assembly-CSharp");
+                var args = open?.GetGenericArguments();
+                if (args == null || args.Length == 0) return;
+                var constraints = args[0].GetGenericParameterConstraints();
+                if (constraints == null || constraints.Length == 0) return;          // 无约束 = 正常
+                if (constraints[0].IsAssignableFrom(typeof(AdvBuff))) return;         // 枚举能满足约束 = 正常
+
+                CLogger.LogWarning(
+                    "[已知问题 · 非插件缺陷] 检测到 4.0 游戏 interop 的泛型约束异常：" +
+                    $"BaseBuff<T> 的 T 被约束为 {constraints[0].FullName}，" +
+                    "而 AdvBuff / TravelDebuff / InvestBuff 这三个词条枚举实际派生自 System.Enum。" +
+                    "枚举是密封值类型，永远无法满足该约束，因此 BaseBuff<AdvBuff> 等实例化在运行时必然失败。" +
+                    "只要有插件在启动期枚举 Assembly-CSharp 的类型（本次最先触发的是 UnityExplorer），" +
+                    "日志就会出现大量 TypeLoadException: ... 'BaseBuff`1[T]' violates the constraint of type parameter 'T'。" +
+                    "这是游戏 interop 生成侧的缺陷，与 CustomizeLib 及各二创插件无关，无需改动插件代码。");
+            }
+            catch
+            {
+                // 自检失败绝不能影响启动
+            }
+        }
+
         public override unsafe void Load()
         {
+            DiagnoseBaseBuffConstraint();
             ClassInjector.RegisterTypeInIl2Cpp<CustomPlantMonoBehaviour>();
             ClassInjector.RegisterTypeInIl2Cpp<SelectCustomPlants>();
             ClassInjector.RegisterTypeInIl2Cpp<CheckCardState>();
