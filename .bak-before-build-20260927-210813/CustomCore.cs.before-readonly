@@ -37,38 +37,38 @@ namespace CustomizeLib.BepInEx
         #region TypeMgrExtra
         public static class TypeMgrExtra
         {
-            public static List<PlantType> BigNut { get; } = [];
-            public static List<ZombieType> BigZombie { get; } = [];
-            public static List<PlantType> DoubleBoxPlants { get; } = [];
-            public static List<ZombieType> EliteZombie { get; } = [];
-            public static List<ZombieType> DriverZombie { get; } = [];
-            public static List<PlantType> FlyingPlants { get; } = [];
-            public static List<ZombieType> IsAirZombie { get; } = [];
-            public static List<PlantType> IsCaltrop { get; } = [];
-            public static List<PlantType> IsCustomPlant { get; } = [];
-            public static List<PlantType> IsFirePlant { get; } = [];
-            public static List<PlantType> IsIcePlant { get; } = [];
-            public static List<PlantType> IsMagnetPlants { get; } = [];
-            public static List<PlantType> IsNut { get; } = [];
-            public static List<PlantType> IsPlantern { get; } = [];
-            public static List<PlantType> IsPot { get; } = [];
-            public static List<PlantType> IsPotatoMine { get; } = [];
-            public static List<PlantType> IsPuff { get; } = [];
-            public static List<PlantType> IsPumpkin { get; } = [];
-            public static List<PlantType> IsSmallRangeLantern { get; } = [];
-            public static List<PlantType> IsSpecialPlant { get; } = [];
-            public static List<PlantType> IsSpickRock { get; } = [];
-            public static List<PlantType> IsTallNut { get; } = [];
-            public static List<PlantType> IsTangkelp { get; } = [];
-            public static List<PlantType> IsWaterPlant { get; } = [];
-            public static List<ZombieType> NotRandomBungiZombie { get; } = [];
-            public static List<ZombieType> NotRandomZombie { get; } = [];
-            public static List<ZombieType> UltimateZombie { get; } = [];
-            public static List<PlantType> UmbrellaPlants { get; } = [];
-            public static List<ZombieType> UselessHypnoZombie { get; } = [];
-            public static List<ZombieType> WaterZombie { get; } = [];
-            public static List<PlantType> UncrashablePlants { get; } = [];
-            public static Dictionary<PlantType, CardLevel> LevelPlants { get; } = [];
+            public static List<PlantType> BigNut { get; set; } = [];
+            public static List<ZombieType> BigZombie { get; set; } = [];
+            public static List<PlantType> DoubleBoxPlants { get; set; } = [];
+            public static List<ZombieType> EliteZombie { get; set; } = [];
+            public static List<ZombieType> DriverZombie { get; set; } = [];
+            public static List<PlantType> FlyingPlants { get; set; } = [];
+            public static List<ZombieType> IsAirZombie { get; set; } = [];
+            public static List<PlantType> IsCaltrop { get; set; } = [];
+            public static List<PlantType> IsCustomPlant { get; set; } = [];
+            public static List<PlantType> IsFirePlant { get; set; } = [];
+            public static List<PlantType> IsIcePlant { get; set; } = [];
+            public static List<PlantType> IsMagnetPlants { get; set; } = [];
+            public static List<PlantType> IsNut { get; set; } = [];
+            public static List<PlantType> IsPlantern { get; set; } = [];
+            public static List<PlantType> IsPot { get; set; } = [];
+            public static List<PlantType> IsPotatoMine { get; set; } = [];
+            public static List<PlantType> IsPuff { get; set; } = [];
+            public static List<PlantType> IsPumpkin { get; set; } = [];
+            public static List<PlantType> IsSmallRangeLantern { get; set; } = [];
+            public static List<PlantType> IsSpecialPlant { get; set; } = [];
+            public static List<PlantType> IsSpickRock { get; set; } = [];
+            public static List<PlantType> IsTallNut { get; set; } = [];
+            public static List<PlantType> IsTangkelp { get; set; } = [];
+            public static List<PlantType> IsWaterPlant { get; set; } = [];
+            public static List<ZombieType> NotRandomBungiZombie { get; set; } = [];
+            public static List<ZombieType> NotRandomZombie { get; set; } = [];
+            public static List<ZombieType> UltimateZombie { get; set; } = [];
+            public static List<PlantType> UmbrellaPlants { get; set; } = [];
+            public static List<ZombieType> UselessHypnoZombie { get; set; } = [];
+            public static List<ZombieType> WaterZombie { get; set; } = [];
+            public static List<PlantType> UncrashablePlants { get; set; } = [];
+            public static Dictionary<PlantType, CardLevel> LevelPlants { get; set; } = [];
         }
 
         /// <summary>
@@ -76,35 +76,35 @@ namespace CustomizeLib.BepInEx
         /// </summary>
         public static class TypeMgrExtraSkin
         {
-            public static Dictionary<PlantType, int> BigNut { get; } = [];
-            public static Dictionary<ZombieType, int> BigZombie { get; } = [];
-            public static Dictionary<PlantType, int> DoubleBoxPlants { get; } = [];
-            public static Dictionary<ZombieType, int> EliteZombie { get; } = [];
-            public static Dictionary<PlantType, int> FlyingPlants { get; } = [];
-            public static Dictionary<ZombieType, int> IsAirZombie { get; } = [];
-            public static Dictionary<PlantType, int> IsCaltrop { get; } = [];
-            public static Dictionary<PlantType, int> IsCustomPlant { get; } = [];
-            public static Dictionary<PlantType, int> IsFirePlant { get; } = [];
-            public static Dictionary<PlantType, int> IsIcePlant { get; } = [];
-            public static Dictionary<PlantType, int> IsMagnetPlants { get; } = [];
-            public static Dictionary<PlantType, int> IsNut { get; } = [];
-            public static Dictionary<PlantType, int> IsPlantern { get; } = [];
-            public static Dictionary<PlantType, int> IsPot { get; } = [];
-            public static Dictionary<PlantType, int> IsPotatoMine { get; } = [];
-            public static Dictionary<PlantType, int> IsPuff { get; } = [];
-            public static Dictionary<PlantType, int> IsPumpkin { get; } = [];
-            public static Dictionary<PlantType, int> IsSmallRangeLantern { get; } = [];
-            public static Dictionary<PlantType, int> IsSpecialPlant { get; } = [];
-            public static Dictionary<PlantType, int> IsSpickRock { get; } = [];
-            public static Dictionary<PlantType, int> IsTallNut { get; } = [];
-            public static Dictionary<PlantType, int> IsTangkelp { get; } = [];
-            public static Dictionary<PlantType, int> IsWaterPlant { get; } = [];
-            public static Dictionary<ZombieType, int> NotRandomBungiZombie { get; } = [];
-            public static Dictionary<ZombieType, int> NotRandomZombie { get; } = [];
-            public static Dictionary<ZombieType, int> UltimateZombie { get; } = [];
-            public static Dictionary<PlantType, int> UmbrellaPlants { get; } = [];
-            public static Dictionary<ZombieType, int> UselessHypnoZombie { get; } = [];
-            public static Dictionary<ZombieType, int> WaterZombie { get; } = [];
+            public static Dictionary<PlantType, int> BigNut { get; set; } = [];
+            public static Dictionary<ZombieType, int> BigZombie { get; set; } = [];
+            public static Dictionary<PlantType, int> DoubleBoxPlants { get; set; } = [];
+            public static Dictionary<ZombieType, int> EliteZombie { get; set; } = [];
+            public static Dictionary<PlantType, int> FlyingPlants { get; set; } = [];
+            public static Dictionary<ZombieType, int> IsAirZombie { get; set; } = [];
+            public static Dictionary<PlantType, int> IsCaltrop { get; set; } = [];
+            public static Dictionary<PlantType, int> IsCustomPlant { get; set; } = [];
+            public static Dictionary<PlantType, int> IsFirePlant { get; set; } = [];
+            public static Dictionary<PlantType, int> IsIcePlant { get; set; } = [];
+            public static Dictionary<PlantType, int> IsMagnetPlants { get; set; } = [];
+            public static Dictionary<PlantType, int> IsNut { get; set; } = [];
+            public static Dictionary<PlantType, int> IsPlantern { get; set; } = [];
+            public static Dictionary<PlantType, int> IsPot { get; set; } = [];
+            public static Dictionary<PlantType, int> IsPotatoMine { get; set; } = [];
+            public static Dictionary<PlantType, int> IsPuff { get; set; } = [];
+            public static Dictionary<PlantType, int> IsPumpkin { get; set; } = [];
+            public static Dictionary<PlantType, int> IsSmallRangeLantern { get; set; } = [];
+            public static Dictionary<PlantType, int> IsSpecialPlant { get; set; } = [];
+            public static Dictionary<PlantType, int> IsSpickRock { get; set; } = [];
+            public static Dictionary<PlantType, int> IsTallNut { get; set; } = [];
+            public static Dictionary<PlantType, int> IsTangkelp { get; set; } = [];
+            public static Dictionary<PlantType, int> IsWaterPlant { get; set; } = [];
+            public static Dictionary<ZombieType, int> NotRandomBungiZombie { get; set; } = [];
+            public static Dictionary<ZombieType, int> NotRandomZombie { get; set; } = [];
+            public static Dictionary<ZombieType, int> UltimateZombie { get; set; } = [];
+            public static Dictionary<PlantType, int> UmbrellaPlants { get; set; } = [];
+            public static Dictionary<ZombieType, int> UselessHypnoZombie { get; set; } = [];
+            public static Dictionary<ZombieType, int> WaterZombie { get; set; } = [];
         }
 
         /// <summary>
@@ -112,35 +112,35 @@ namespace CustomizeLib.BepInEx
         /// </summary>
         public static class TypeMgrExtraSkinBackup
         {
-            public static Dictionary<PlantType, int> BigNut { get; } = [];
-            public static Dictionary<ZombieType, int> BigZombie { get; } = [];
-            public static Dictionary<PlantType, int> DoubleBoxPlants { get; } = [];
-            public static Dictionary<ZombieType, int> EliteZombie { get; } = [];
-            public static Dictionary<PlantType, int> FlyingPlants { get; } = [];
-            public static Dictionary<ZombieType, int> IsAirZombie { get; } = [];
-            public static Dictionary<PlantType, int> IsCaltrop { get; } = [];
-            public static Dictionary<PlantType, int> IsCustomPlant { get; } = [];
-            public static Dictionary<PlantType, int> IsFirePlant { get; } = [];
-            public static Dictionary<PlantType, int> IsIcePlant { get; } = [];
-            public static Dictionary<PlantType, int> IsMagnetPlants { get; } = [];
-            public static Dictionary<PlantType, int> IsNut { get; } = [];
-            public static Dictionary<PlantType, int> IsPlantern { get; } = [];
-            public static Dictionary<PlantType, int> IsPot { get; } = [];
-            public static Dictionary<PlantType, int> IsPotatoMine { get; } = [];
-            public static Dictionary<PlantType, int> IsPuff { get; } = [];
-            public static Dictionary<PlantType, int> IsPumpkin { get; } = [];
-            public static Dictionary<PlantType, int> IsSmallRangeLantern { get; } = [];
-            public static Dictionary<PlantType, int> IsSpecialPlant { get; } = [];
-            public static Dictionary<PlantType, int> IsSpickRock { get; } = [];
-            public static Dictionary<PlantType, int> IsTallNut { get; } = [];
-            public static Dictionary<PlantType, int> IsTangkelp { get; } = [];
-            public static Dictionary<PlantType, int> IsWaterPlant { get; } = [];
-            public static Dictionary<ZombieType, int> NotRandomBungiZombie { get; } = [];
-            public static Dictionary<ZombieType, int> NotRandomZombie { get; } = [];
-            public static Dictionary<ZombieType, int> UltimateZombie { get; } = [];
-            public static Dictionary<PlantType, int> UmbrellaPlants { get; } = [];
-            public static Dictionary<ZombieType, int> UselessHypnoZombie { get; } = [];
-            public static Dictionary<ZombieType, int> WaterZombie { get; } = [];
+            public static Dictionary<PlantType, int> BigNut { get; set; } = [];
+            public static Dictionary<ZombieType, int> BigZombie { get; set; } = [];
+            public static Dictionary<PlantType, int> DoubleBoxPlants { get; set; } = [];
+            public static Dictionary<ZombieType, int> EliteZombie { get; set; } = [];
+            public static Dictionary<PlantType, int> FlyingPlants { get; set; } = [];
+            public static Dictionary<ZombieType, int> IsAirZombie { get; set; } = [];
+            public static Dictionary<PlantType, int> IsCaltrop { get; set; } = [];
+            public static Dictionary<PlantType, int> IsCustomPlant { get; set; } = [];
+            public static Dictionary<PlantType, int> IsFirePlant { get; set; } = [];
+            public static Dictionary<PlantType, int> IsIcePlant { get; set; } = [];
+            public static Dictionary<PlantType, int> IsMagnetPlants { get; set; } = [];
+            public static Dictionary<PlantType, int> IsNut { get; set; } = [];
+            public static Dictionary<PlantType, int> IsPlantern { get; set; } = [];
+            public static Dictionary<PlantType, int> IsPot { get; set; } = [];
+            public static Dictionary<PlantType, int> IsPotatoMine { get; set; } = [];
+            public static Dictionary<PlantType, int> IsPuff { get; set; } = [];
+            public static Dictionary<PlantType, int> IsPumpkin { get; set; } = [];
+            public static Dictionary<PlantType, int> IsSmallRangeLantern { get; set; } = [];
+            public static Dictionary<PlantType, int> IsSpecialPlant { get; set; } = [];
+            public static Dictionary<PlantType, int> IsSpickRock { get; set; } = [];
+            public static Dictionary<PlantType, int> IsTallNut { get; set; } = [];
+            public static Dictionary<PlantType, int> IsTangkelp { get; set; } = [];
+            public static Dictionary<PlantType, int> IsWaterPlant { get; set; } = [];
+            public static Dictionary<ZombieType, int> NotRandomBungiZombie { get; set; } = [];
+            public static Dictionary<ZombieType, int> NotRandomZombie { get; set; } = [];
+            public static Dictionary<ZombieType, int> UltimateZombie { get; set; } = [];
+            public static Dictionary<PlantType, int> UmbrellaPlants { get; set; } = [];
+            public static Dictionary<ZombieType, int> UselessHypnoZombie { get; set; } = [];
+            public static Dictionary<ZombieType, int> WaterZombie { get; set; } = [];
         }
         #endregion
 
@@ -1559,97 +1559,97 @@ namespace CustomizeLib.BepInEx
         public static Lazy<CustomCore> Instance => new(CoreData.Instance?.Value);
 
         #region 数据
-        public static Dictionary<int, (PlantType, string, Func<bool>, int)> CustomAdvancedBuffs { get; } = [];
-        public static Dictionary<BulletType, GameObject> CustomBullets { get; } = [];
+        public static Dictionary<int, (PlantType, string, Func<bool>, int)> CustomAdvancedBuffs { get; set; } = [];
+        public static Dictionary<BulletType, GameObject> CustomBullets { get; set; } = [];
 
         /// <summary>
         /// 自定义僵尸词条列表
         /// </summary>
-        public static Dictionary<int, (string, ZombieType, Func<bool>)> CustomDebuffs { get; } = [];
-        public static List<(int, int, int)> CustomFusions { get; } = [];
-        public static List<CustomLevelData> CustomLevels { get; } = [];
-        public static Dictionary<ParticleType, GameObject> CustomParticles { get; } = [];
+        public static Dictionary<int, (string, ZombieType, Func<bool>)> CustomDebuffs { get; set; } = [];
+        public static List<(int, int, int)> CustomFusions { get; set; } = [];
+        public static List<CustomLevelData> CustomLevels { get; set; } = [];
+        public static Dictionary<ParticleType, GameObject> CustomParticles { get; set; } = [];
 
-        public static Dictionary<PlantType, Action<Plant>> CustomPlantClicks { get; } = [];
+        public static Dictionary<PlantType, Action<Plant>> CustomPlantClicks { get; set; } = [];
 
-        public static Dictionary<PlantType, CustomPlantData> CustomPlants { get; } = [];
+        public static Dictionary<PlantType, CustomPlantData> CustomPlants { get; set; } = [];
 
         /// <summary>
         /// 自定义植物皮肤列表
         /// </summary>
-        public static Dictionary<PlantType, List<CustomPlantData>> CustomPlantsSkin { get; } = [];
+        public static Dictionary<PlantType, List<CustomPlantData>> CustomPlantsSkin { get; set; } = [];
 
         /// <summary>
         /// 自定义皮肤是否激活
         /// </summary>
-        public static Dictionary<PlantType, bool> CustomPlantsSkinActive { get; } = [];
+        public static Dictionary<PlantType, bool> CustomPlantsSkinActive { get; set; } = [];
 
-        public static List<PlantType> CustomPlantTypes { get; } = [];
+        public static List<PlantType> CustomPlantTypes { get; set; } = [];
 
-        public static Dictionary<int, Sprite> CustomSprites { get; } = [];
+        public static Dictionary<int, Sprite> CustomSprites { get; set; } = [];
 
-        public static Dictionary<int, (PlantType, string, int)> CustomUltimateBuffs { get; } = [];
+        public static Dictionary<int, (PlantType, string, int)> CustomUltimateBuffs { get; set; } = [];
 
-        public static Dictionary<(PlantType, BucketType), Action<Plant>> CustomUseItems { get; } = [];
+        public static Dictionary<(PlantType, BucketType), Action<Plant>> CustomUseItems { get; set; } = [];
 
 
         /// <summary>
         /// 自定义肥料物品事件列表
         /// </summary>
-        public static Dictionary<PlantType, Action<Plant>> CustomUseFertilize { get; } = [];
+        public static Dictionary<PlantType, Action<Plant>> CustomUseFertilize { get; set; } = [];
 
         /// <summary>
         /// 自定义彩色卡牌列表
         /// </summary>
-        public static Dictionary<PlantType, (List<Func<Transform?>>, int)> CustomCards { get; } = [];
+        public static Dictionary<PlantType, (List<Func<Transform?>>, int)> CustomCards { get; set; } = [];
 
         /// <summary>
         /// 自定义普通卡牌列表
         /// </summary>
-        public static Dictionary<PlantType, (List<Func<Transform?>>, int)> CustomNormalCards { get; } = [];
+        public static Dictionary<PlantType, (List<Func<Transform?>>, int)> CustomNormalCards { get; set; } = [];
 
-        public static Dictionary<ZombieType, (GameObject, Sprite, ZombieDataManager.ZombieData)> CustomZombies { get; } = [];
+        public static Dictionary<ZombieType, (GameObject, Sprite, ZombieDataManager.ZombieData)> CustomZombies { get; set; } = [];
 
-        public static List<ZombieType> CustomZombieTypes { get; } = [];
+        public static List<ZombieType> CustomZombieTypes { get; set; } = [];
 
-        public static Dictionary<PlantType, PlantAlmanac> PlantsAlmanac { get; } = [];
+        public static Dictionary<PlantType, PlantAlmanac> PlantsAlmanac { get; set; } = [];
 
         /// <summary>
         /// 皮肤图鉴
         /// </summary>
-        public static Dictionary<PlantType, (string, string)?> PlantsSkinAlmanac { get; } = [];
-        public static Dictionary<PlantType, (Func<Plant, int>, Action<Plant>, int)> SuperSkills { get; } = [];
-        public static Dictionary<ZombieType, (string?, string?, ZombieInfo?)> ZombiesAlmanac { get; } = [];
+        public static Dictionary<PlantType, (string, string)?> PlantsSkinAlmanac { get; set; } = [];
+        public static Dictionary<PlantType, (Func<Plant, int>, Action<Plant>, int)> SuperSkills { get; set; } = [];
+        public static Dictionary<ZombieType, (string?, string?, ZombieInfo?)> ZombiesAlmanac { get; set; } = [];
 
         /// <summary>
         /// 自定义融合洋芋配方
         /// </summary>
-        public static Dictionary<(PlantType, PlantType, PlantType), (List<Action<Plant?, Plant?, Plant?>>, List<Action<Plant?, Plant?, Plant?>>)> CustomMixBombFusions { get; } = []; // (左植物, 中植物, 右植物), (成功事件, 失败事件)
+        public static Dictionary<(PlantType, PlantType, PlantType), (List<Action<Plant?, Plant?, Plant?>>, List<Action<Plant?, Plant?, Plant?>>)> CustomMixBombFusions { get; set; } = []; // (左植物, 中植物, 右植物), (成功事件, 失败事件)
 
         /// <summary>
         /// 自定义子弹移动方式
         /// </summary>
-        public static Dictionary<int, Action<Bullet>> CustomBulletMovingWay { get; } = [];
+        public static Dictionary<int, Action<Bullet>> CustomBulletMovingWay { get; set; } = [];
 
         /// <summary>
         /// 自定义多级词条列表（Buff类型，ID）->（在列表的index，等级）
         /// </summary>
-        public static Dictionary<(BuffType, int), (int, int)> CustomBuffsLevel { get; } = [];
+        public static Dictionary<(BuffType, int), (int, int)> CustomBuffsLevel { get; set; } = [];
 
         /// <summary>
         /// 自定义词条ID映射（Buff类型，指定ID）-> 内部ID
         /// </summary>
-        public static Dictionary<(BuffType, int), int> CustomBuffIDMapping { get; } = [];
+        public static Dictionary<(BuffType, int), int> CustomBuffIDMapping { get; set; } = [];
 
         /// <summary>
         /// 自定义究极植物列表
         /// </summary>
-        public static List<PlantType> CustomUltimatePlants { get; } = [];
+        public static List<PlantType> CustomUltimatePlants { get; set; } = [];
 
         /// <summary>
         /// 自定义词条背景
         /// </summary>
-        public static Dictionary<(BuffType, int), BuffBgType> CustomBuffsBg { get; } = [];
+        public static Dictionary<(BuffType, int), BuffBgType> CustomBuffsBg { get; set; } = [];
 
         /// <summary>
         /// 存卡片检查的列表，用于管理Packet显示，你不应该使用它
@@ -1659,42 +1659,42 @@ namespace CustomizeLib.BepInEx
         /// <summary>
         /// 自定义解锁强究列表
         /// </summary>
-        public static Dictionary<int, (PlantType, string, int)> CustomUnlockBuffs { get; } = [];
+        public static Dictionary<int, (PlantType, string, int)> CustomUnlockBuffs { get; set; } = [];
 
         /// <summary>
         /// 自定义强究列表 (强究类型, 解锁词条id)
         /// </summary>
-        public static Dictionary<PlantType, int> CustomStrongUltimatePlants { get; } = [];
+        public static Dictionary<PlantType, int> CustomStrongUltimatePlants { get; set; } = [];
 
         /// <summary>
         /// 自定义种植植物在另一植物上事件（当前位置的植物的类型，鼠标上的植物类型），Action参数：当前位置的植物
         /// </summary>
-        public static Dictionary<(PlantType, PlantType), List<(Action<Plant>, Func<Plant, bool>, CustomClickCardOnPlant)>> CustomClickCardOnPlantEvents { get; } = [];
+        public static Dictionary<(PlantType, PlantType), List<(Action<Plant>, Func<Plant, bool>, CustomClickCardOnPlant)>> CustomClickCardOnPlantEvents { get; set; } = [];
 
         /// <summary>
         /// 自定义强究-强究词条列表
         /// </summary>
-        public static Dictionary<PlantType, List<int>> CustomStrongUltimatePlantBuffs { get; } = [];
+        public static Dictionary<PlantType, List<int>> CustomStrongUltimatePlantBuffs { get; set; } = [];
 
         /// <summary>
         /// 自定义融合条件列表 植物类型-(是否成功, 成功事件, 失败事件)
         /// </summary>
-        public static Dictionary<PlantType, (Func<bool>?, Action?, Action?)> CustomBanMix { get; } = [];
+        public static Dictionary<PlantType, (Func<bool>?, Action?, Action?)> CustomBanMix { get; set; } = [];
 
         /// <summary>
         /// 自定义植物融合事件 (底植物,融合植物)-触发事件(融合后植物)
         /// </summary>
-        public static Dictionary<(PlantType, PlantType), List<Action<Plant>>> CustomOnMixEvent { get; } = [];
+        public static Dictionary<(PlantType, PlantType), List<Action<Plant>>> CustomOnMixEvent { get; set; } = [];
 
         /// <summary>
         /// 自定义樱桃爆炸
         /// </summary>
-        public static Dictionary<CherryBombType, GameObject> CustomCherrys { get; } = [];
+        public static Dictionary<CherryBombType, GameObject> CustomCherrys { get; set; } = [];
 
         /// <summary>
         /// 自定义词条与植物信息
         /// </summary>
-        public static Dictionary<PlantType, List<(BuffType, int)>> CustomPlantInfo { get; } = new();
+        public static Dictionary<PlantType, List<(BuffType, int)>> CustomPlantInfo { get; set; } = new();
 
         ///// <summary>
         ///// 自定义投资词条
@@ -1705,35 +1705,35 @@ namespace CustomizeLib.BepInEx
         /// <summary>
         /// 自定义词条价格
         /// </summary>
-        public static Dictionary<(BuffType, int), int> CustomBuffCost { get; } = new();
+        public static Dictionary<(BuffType, int), int> CustomBuffCost { get; set; } = new();
 
         public static int CustomBuffStartID = 17500;
 
         /// <summary>
         /// 已加载的ab包
         /// </summary>
-        public static Dictionary<string, AssetBundle> LoadedAssetBundles { get; } = new();
+        public static Dictionary<string, AssetBundle> LoadedAssetBundles { get; set; } = new();
 
         #region 皮肤子弹
         /// <summary>
         /// 自定义皮肤子弹列表 ((植物类型, 在SkinDic中的索引), (原来的子弹类型, 替换后的子弹类型列表(所有可能随机出来的)))
         /// </summary>
-        public static Dictionary<(PlantType, int), Dictionary<BulletType, List<BulletType>>> CustomBulletSkinReplace { get; } = new();
+        public static Dictionary<(PlantType, int), Dictionary<BulletType, List<BulletType>>> CustomBulletSkinReplace { get; set; } = new();
 
         /// <summary>
         /// 自定义皮肤子弹列表 ((植物类型, 原子弹类型, 皮肤索引), 对应的所有新子弹类型)
         /// </summary>
-        public static Dictionary<(PlantType pt, BulletType oriBulletType, int index), List<BulletType>> CustomBulletsSkinID { get; } = new();
+        public static Dictionary<(PlantType pt, BulletType oriBulletType, int index), List<BulletType>> CustomBulletsSkinID { get; set; } = new();
 
         /// <summary>
         /// 自定义皮肤子弹类型 (原子弹类型, 所有对应的(新子弹类型, 子弹预制体))
         /// </summary>
-        public static Dictionary<BulletType, List<(BulletType, GameObject?)>> CustomSkinBullet { get; } = new();
+        public static Dictionary<BulletType, List<(BulletType, GameObject?)>> CustomSkinBullet { get; set; } = new();
 
         /// <summary>
         /// 自定义皮肤索引
         /// </summary>
-        public static Dictionary<PlantType, int> CustomSkinIndex { get; } = new();
+        public static Dictionary<PlantType, int> CustomSkinIndex { get; set; } = new();
 
         public static int CustomBulletSkinStartID = 2750;
 
@@ -1743,73 +1743,73 @@ namespace CustomizeLib.BepInEx
         /// <summary>
         /// 已启用的自定义皮肤
         /// </summary>
-        public static Dictionary<PlantType, bool> EnableSkin { get; } = new();
+        public static Dictionary<PlantType, bool> EnableSkin { get; set; } = new();
 
         /// <summary>
         /// 自定义皮肤 类型-索引 列表
         /// </summary>
-        public static Dictionary<PlantType, List<int>> CustomPlantSkinIndex { get; } = new();
+        public static Dictionary<PlantType, List<int>> CustomPlantSkinIndex { get; set; } = new();
 
-        public static List<AssetBundle> LoadedSkinAssetBundle { get; } = new();
+        public static List<AssetBundle> LoadedSkinAssetBundle { get; set; } = new();
 
         public static int CustomCherryStartID = 2000;
 
         /// <summary>
         /// 二创植物名称
         /// </summary>
-        public static Dictionary<PlantType, string> CustomPlantNames { get; } = new();
+        public static Dictionary<PlantType, string> CustomPlantNames { get; set; } = new();
 
         /// <summary>
         /// 二创僵尸名称
         /// </summary>
-        public static Dictionary<ZombieType, string> CustomZombieNames { get; } = new();
+        public static Dictionary<ZombieType, string> CustomZombieNames { get; set; } = new();
 
         /// <summary>
         /// 自定义词条文本
         /// </summary>
-        public static Dictionary<(BuffType, int), string> CustomBuffText { get; } = new();
+        public static Dictionary<(BuffType, int), string> CustomBuffText { get; set; } = new();
 
         /// <summary>
         /// 自定义词条图标
         /// </summary>
-        public static Dictionary<(BuffType, int), PlantType> CustomBuffIcon { get; } = new();
+        public static Dictionary<(BuffType, int), PlantType> CustomBuffIcon { get; set; } = new();
 
         /// <summary>
         /// 自定义音效
         /// </summary>
-        public static Dictionary<int, AudioClip> CustomSounds { get; } = new();
+        public static Dictionary<int, AudioClip> CustomSounds { get; set; } = new();
 
         /// <summary>
         /// 二创词条
         /// </summary>
-        public static Dictionary<(BuffType, int), (string, PlantType, ZombieType)> CustomBuffs { get; } = new();
+        public static Dictionary<(BuffType, int), (string, PlantType, ZombieType)> CustomBuffs { get; set; } = new();
 
         /// <summary>
         /// 设置词条图鉴内词条类型
         /// </summary>
-        public static Dictionary<(BuffType, int), (AlmanacBuffType, PlantType, ZombieType)> CustomAlmanacBuffType { get; } = new();
+        public static Dictionary<(BuffType, int), (AlmanacBuffType, PlantType, ZombieType)> CustomAlmanacBuffType { get; set; } = new();
 
-        public static Dictionary<Il2CppSystem.Type, string> CustomEndlessSaveData { get; } = new();
+        public static Dictionary<Il2CppSystem.Type, string> CustomEndlessSaveData { get; set; } = new();
 
         /// <summary>
         /// 自定义PlantInfo (究极, (亚种, 词条1, 词条2, 强究))
         /// </summary>
-        public static Dictionary<PlantType, (PlantType? subType, object buff1, object buff2, bool isStrongUltimate)> CustomPlantInfos { get; } = new();
+        public static Dictionary<PlantType, (PlantType? subType, object buff1, object buff2, bool isStrongUltimate)> CustomPlantInfos { get; set; } = new();
 
         /// <summary>
         /// 自定义音乐
         /// </summary>
-        public static Dictionary<MusicType, AudioClip> CustomMusics { get; } = new();
+        public static Dictionary<MusicType, AudioClip> CustomMusics { get; set; } = new();
 
         /// <summary>
         /// 自定义效果
         /// </summary>
-        public static Dictionary<EffectType, Func<Entity, float, float, object>> CustomEffects { get; } = new();
+        public static Dictionary<EffectType, Func<Entity, float, float, object>> CustomEffects { get; set; } = new();
 
         /// <summary>
         /// 自定义子弹击中判定
         /// </summary>
-        public static Dictionary<BulletHitFilter, (bool igonreTeam, Func<Zombie, bool> func)> CustomBulletHitFilter { get; } = new();
+        public static Dictionary<BulletHitFilter, (bool igonreTeam, Func<Zombie, bool> func)> CustomBulletHitFilter { get; set; } = new();
         #endregion
     }
 

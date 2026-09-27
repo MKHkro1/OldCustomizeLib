@@ -1,4 +1,4 @@
-﻿using CustomizeLib.BepInEx.ExtensionData.Basic;
+using CustomizeLib.BepInEx.ExtensionData.Basic;
 using CustomizeLib.BepInEx.UnmanagedTools;
 using System;
 using System.Collections;
@@ -229,7 +229,10 @@ namespace CustomizeLib.BepInEx.Patch
                         newDic.Add(type, false);
                 }
             }
-            CustomCore.EnableSkin = newDic;
+            // CustomCore.EnableSkin 已改为只读属性（{ get; }），改成原地 Clear + 回填
+            CustomCore.EnableSkin.Clear();
+            foreach (var kvp in newDic)
+                CustomCore.EnableSkin[kvp.Key] = kvp.Value;
         }
 
         public static Dictionary<TKey, TValue>? Clone<TKey, TValue>(this Il2CppSystem.Collections.Generic.Dictionary<TKey, TValue> dic1) where TKey : notnull

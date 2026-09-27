@@ -841,6 +841,25 @@
             自定义射击
             </summary>
         </member>
+        <member name="T:CustomizeLib.BepInEx.ExtensionData.Basic.ExtensionDataComponent">
+             <summary>
+             挂在 GameObject 上的扩展数据容器。
+            
+             【为什么它现在只是个转发层】
+             本仓库原本有两套并行的"挂在 GameObject 上的 string→object 存储"：
+               ① 本类 ExtensionDataComponent（字段 data）
+               ② ExtensionDataUnity.DataComponent（字段 datas）+ ExtDataRef&lt;T&gt;
+             两者都能被 GetData/SetData 命中，命名也极相似，mod 作者很容易用错其中一套，
+             而两套各自还都带重复查找的问题。
+             现在把存储统一到 ②（本类只做转发），公开 API 与类名都保留，
+             因此外部 mod 无论是调 GetData/SetData 扩展方法、还是直接 GetComponent&lt;ExtensionDataComponent&gt;()，行为都不变。
+             DataComponent 早已通过 ClassInjector 注册进 IL2CPP（CustomCore 里与本类同一批注册），
+             所以这里 GetOrAddComponent 是安全的。
+             </summary>
+        </member>
+        <member name="P:CustomizeLib.BepInEx.ExtensionData.Basic.ExtensionDataComponent.data">
+            <summary>底层字典的实时视图（保留只读访问，字段名 data 不变）。</summary>
+        </member>
         <member name="T:CustomizeLib.BepInEx.Extra.Attributes.ResultAttribute">
             <summary>
             方法额外返回值

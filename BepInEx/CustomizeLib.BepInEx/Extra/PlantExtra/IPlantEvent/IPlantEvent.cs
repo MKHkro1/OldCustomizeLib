@@ -656,11 +656,37 @@ namespace CustomizeLib.BepInEx.Extra.PlantExtra.IPlantEvent
 
         private static void LogErrorMessage(Exception ex, bool async = false)
         {
+            // 【限频】这些事件跑在每帧路径上（Plant.Update / Plant.FixedUpdate 由原生钩子接管），
+            // 某个 mod 的 OnUpdate 若每帧都抛异常，原实现会把完全相同的堆栈刷满整个 BepInEx 日志。
+            // 现在同一条消息在冷却期内只打一次，并提示已被抑制多少次，冷却 10 秒。
+            // 代价只落在"真的出错"这条路径上，热路径零开销。
+            // 另注：这里刻意不改成"用 board == null 过滤非关卡实例"—— Entity.board 在 interop 里是属性，
+            // 每株每帧读它就是一次原生调用，会把热路径省下来的开销又花回去；
+            // 而 OnUpdate 本身已有 GameAPP.theGameStatus == InGame 闸，普通事件在非关卡场景本就进不来。
+            var key = ex.GetType().FullName + "|" + ex.Message + "|" + (async ? "async" : "sync");
+            _errorLogGate.TryGetValue(key, out var last);
+            var now = Time.realtimeSinceStartup;
+            if (now - last < ErrorLogCooldown)
+            {
+                _errorSuppressed[key] = _errorSuppressed.TryGetValue(key, out var c) ? c + 1 : 1;
+                return;
+            }
+            if (_errorSuppressed.TryGetValue(key, out var suppressed) && suppressed > 0)
+            {
+                CustomCore.CLogger.LogWarning(
+                    $"[IPlantEvent] 同一条异常在 {ErrorLogCooldown:F0}s 内重复 {suppressed} 次，已抑制；本条为最后一次之后的再次出现。");
+                _errorSuppressed[key] = 0;
+            }
+            _errorLogGate[key] = now;
             CustomCore.CLogger.LogError(
                 $"An exception occurred while executing I{(async ? "Async" : "")}PlantEvent: {ex.Message}\n" +
                 $"StackTrace:\n" +
                 $"{ex.StackTrace}");
         }
+
+        private const float ErrorLogCooldown = 10f;
+        private static readonly Dictionary<string, float> _errorLogGate = new();
+        private static readonly Dictionary<string, int> _errorSuppressed = new();
 
         public static void MakeRefresh(Component comp) => 
             comp.SetData(Strings.CachedCompsName, GetEventComponents(comp.GetComponents<Component>()));
